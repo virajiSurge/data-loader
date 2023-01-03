@@ -30,7 +30,7 @@ export class StudentResolver {
     @Parent() student: Student,
     @Context() { loaders }: { loaders: IDataloaders },
   ) {
-    const { id: studentId } = student;
+    const { _id: studentId } = student;
     return loaders.friendsLoader.load(studentId);
   }
 }

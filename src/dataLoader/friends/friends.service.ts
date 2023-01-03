@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Friend } from './friends.entity';
 
 @Injectable()
@@ -20,27 +20,29 @@ export class FriendService {
   }
 
   public async getAllFriendsByStudentIds(
-    studentIds: readonly number[],
+    studentIds: readonly ObjectId[],
   ): Promise<Friend[]> {
-    return this.friendsModel.find({ studentId: { $in: studentIds } });
+    console.log("calling db")
+    const classIds = studentIds.map((studentId) => studentId.toString());
+    return this.friendsModel.find({ studentId: { $in: classIds } });
   }
 
   public async getStudentsFriendsByBatch(
-    studentIds: readonly number[],
+    studentIds: readonly ObjectId[],
   ): Promise<(Friend | any)[]> {
     console.log("calling friends", studentIds)
     const friends = await this.getAllFriendsByStudentIds(studentIds);
 
-    console.log(" friends", friends[0].studentId)
+    console.log(" friends", friends)
     const mappedResults = this._mapResultToIds(studentIds, friends);
     console.log(" mappedResults", mappedResults)
     return mappedResults;
   }
 
-  private _mapResultToIds(studentIds: readonly number[], friends: Friend[]) {
+  private _mapResultToIds(studentIds: readonly ObjectId[], friends: Friend[]) {
     return studentIds.map(
       (id) =>
-        friends.filter((friend: Friend) => friend.studentId === id) || null,
+        friends.filter((friend: Friend) => friend.studentId === id.toString()) || null,
     );
   }
 }

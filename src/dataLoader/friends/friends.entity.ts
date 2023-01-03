@@ -1,6 +1,7 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
+import { Student, StudentSchema } from '../students/student.entity';
 
 @Schema()
 @ObjectType()
@@ -23,12 +24,19 @@ export class Friend {
   name: string;
 
 
+  // @Prop({
+  //   required: false,
+  //   default: 0,
+  //   type: Number,
+  // })
+  // @Field(() => Int, { nullable: true })
+  // studentId: number;
+
   @Prop({
     required: false,
-    default: 0,
-    type: Number,
+    type: String,
   })
-  @Field(() => Int, { nullable: true })
-  studentId: number;
+  @Field(() => String, { nullable: true })
+  studentId: string;
 }
 export const FriendSchema = SchemaFactory.createForClass(Friend);

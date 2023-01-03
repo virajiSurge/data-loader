@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
+import { ObjectId } from 'mongoose';
 //import * as DataLoader from 'dataloader';
 import { IDataloaders } from './dataLoader.interaface';
 import { Friend } from './friends/friends.entity';
@@ -11,7 +12,7 @@ export class DataloaderService {
 
   getLoaders(): IDataloaders {
     const friendsLoader = this._createFriendsLoader();
-    console.log("calling loader")
+    //console.log("calling loader")
     return {
       friendsLoader,
     };
@@ -19,10 +20,10 @@ export class DataloaderService {
 
   private _createFriendsLoader() {
     
-    console.log("calling loader")
-    return new DataLoader<number, Friend>(
-      async (keys: readonly number[]) =>
-        await this.friendsService.getStudentsFriendsByBatch(keys as number[]),
+    //console.log("calling loader")
+    return new DataLoader<ObjectId, Friend>(
+      async (keys: readonly ObjectId[]) =>
+        await this.friendsService.getStudentsFriendsByBatch(keys as ObjectId[]),
     );
   }
 }
