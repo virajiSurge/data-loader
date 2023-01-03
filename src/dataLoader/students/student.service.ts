@@ -9,16 +9,9 @@ export class StudentService {
     @InjectModel(Student.name) private studentsModel: Model<Student>,
   ) {}
   public async getAll(): Promise<Student[]> {
-    const students = await this.studentsModel.find();
   
     return await this.studentsModel.find();
   }
 
-//   async create(studentInput: Student): Promise<Student> {
-//     const newStudent = new this.studentsModel();
-//     newStudent.set(studentInput);
 
-//       const savedStudent = await newStudent.save();
-//       return savedStudent;
-//   }
 }

@@ -20,9 +20,7 @@ export class StudentResolver {
 
   @Query(() => [Student])
   async students(): Promise<Student[]> {
-    const students = await this.studentService.getAll();
-    console.log("first",students[0].name )
-    return students;
+    return await this.studentService.getAll();;
   }
 
   @ResolveField('friends', () => [Friend])
@@ -35,15 +33,3 @@ export class StudentResolver {
   }
 }
 
-// @Resolver(() => Student)
-// export class ClassesResolver {
-//     constructor(private readonly studentService: StudentService) {}
-
-//   //@Public(false)
-//   @Mutation(() => Student)
-//   async createClass(@Args('student') studentInput: Class): Promise<Student> {
-//     return await this.studentService.create(studentInput);
-//   }
-
-
-// }
