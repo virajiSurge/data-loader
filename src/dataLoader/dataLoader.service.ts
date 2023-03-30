@@ -3,8 +3,8 @@ import * as DataLoader from 'dataloader';
 import { ObjectId } from 'mongoose';
 //import * as DataLoader from 'dataloader';
 import { IDataloaders } from './dataLoader.interaface';
-import { Friend } from './friends/friends.entity';
-import { FriendService } from './friends/friends.service';
+import { Friend } from '../domains/friends/friends.entity';
+import { FriendService } from '../domains/friends/friends.service';
 
 @Injectable()
 export class DataloaderService {

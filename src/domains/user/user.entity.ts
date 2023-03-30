@@ -4,13 +4,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
 @Schema()
 @ObjectType()
-@InputType('StudentInput')
-export class Student {
-  @Field(() => String, { nullable: true })
-  _id: MongooseSchema.Types.ObjectId;
-
-//   @Field()
-//   id: number;
+@InputType('UserInput')
+export class User {
+  // @Field(() => String, { nullable: true })
+  // _id: MongooseSchema.Types.ObjectId;
 
   @Prop({
     required: false,
@@ -25,19 +22,7 @@ export class Student {
     type: String,
   })
   @Field(() => String, { nullable: true })
-  name: string;
-
-
-  @Prop({
-    required: false,
-    type: String,
-  })
-  @Field(() => String, { nullable: true })
-  class: string;
-  
-
-  @Field(() => [Friend])
-  friends?: Friend[];
+  role: string;
 }
 
-export const StudentSchema = SchemaFactory.createForClass(Student);
+export const UserSchema = SchemaFactory.createForClass(User);

@@ -7,8 +7,11 @@ import { DataloaderModule } from './dataLoader/dataLoader.module';
 import { DataloaderService } from './dataLoader/dataloader.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
-import { StudentModule } from './dataLoader/students/student.module';
-import { FriendModule } from './dataLoader/friends/friends.module';
+import { StudentModule } from './domains/students/student.module';
+import { FriendModule } from './domains/friends/friends.module';
+import { PostModule } from './domains/posts/posts.module';
+import { UserModule } from './domains/user/user.module';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
@@ -35,9 +38,12 @@ import { FriendModule } from './dataLoader/friends/friends.module';
     }),
     StudentModule,
     FriendModule,
+    PostModule,
+    UserModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [AppService],
-  
 })
-export class AppModule {}
+export class AppModule {
+}

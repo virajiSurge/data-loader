@@ -7,7 +7,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { IDataloaders } from '../dataLoader.interaface';
+import { IDataloaders } from '../../dataLoader/dataLoader.interaface';
 import { Friend } from '../friends/friends.entity';
 import { Student } from './student.entity';
 //import { Friend } from 'src/friend/friend.entity';
@@ -29,6 +29,7 @@ export class StudentResolver {
     @Context() { loaders }: { loaders: IDataloaders },
   ) {
     const { _id: studentId } = student;
+    console.log(loaders.friendsLoader.load(studentId))
     return loaders.friendsLoader.load(studentId);
   }
 }

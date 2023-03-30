@@ -1,3 +1,4 @@
+import { AbilityBuilder, createMongoAbility } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
@@ -12,7 +13,13 @@ export class FriendService {
   //   }
 
   constructor(@InjectModel(Friend.name) private friendsModel: Model<Friend>) {}
+  defineAbilities = (studentId) => {
+    const { can, cannot, build } = new AbilityBuilder(createMongoAbility);
 
+    can('read', 'Friend', { studentId: studentId });
+
+    return build();
+  };
   public async getStudentFriends(studentId: number): Promise<Friend[]> {
     return await this.friendsModel.find({
       studentId: studentId,

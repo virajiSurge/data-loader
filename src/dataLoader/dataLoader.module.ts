@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { FriendModule } from './friends/friends.module';
+import { FriendModule } from '../domains/friends/friends.module';
 import { DataloaderService } from './dataloader.service';
 
 @Module({
