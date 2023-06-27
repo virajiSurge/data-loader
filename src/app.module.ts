@@ -12,6 +12,7 @@ import { FriendModule } from './domains/friends/friends.module';
 import { PostModule } from './domains/posts/posts.module';
 import { UserModule } from './domains/user/user.module';
 import { CaslModule } from './casl/casl.module';
+import { ClusterMigrationModule } from './domains/cluster-migration/ClusterMigration.module';
 
 @Module({
   imports: [
@@ -41,9 +42,9 @@ import { CaslModule } from './casl/casl.module';
     PostModule,
     UserModule,
     CaslModule,
+    ClusterMigrationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}
