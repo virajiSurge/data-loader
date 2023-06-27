@@ -26,7 +26,7 @@ export class ClusterMigrationService {
 
   async migrateIndex(indexName: string): Promise<boolean> {
     try {
-      console.log(`Starting migration: ${indexName}`);
+      console.log('Starting migration:', indexName);
       const body = await this.sourceClient.search({
         index: indexName,
         size: 1000,
