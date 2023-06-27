@@ -12,6 +12,8 @@ import { FriendModule } from './domains/friends/friends.module';
 import { PostModule } from './domains/posts/posts.module';
 import { UserModule } from './domains/user/user.module';
 import { CaslModule } from './casl/casl.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -41,9 +43,22 @@ import { CaslModule } from './casl/casl.module';
     PostModule,
     UserModule,
     CaslModule,
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: config.get('THROTTLE_TTL'),
+        limit: config.get('THROTTLE_LIMIT'),
+      }),
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}

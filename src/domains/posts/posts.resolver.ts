@@ -4,7 +4,9 @@ import { Action, AppAbility } from 'src/casl/casl.ability.factory';
 import { CheckPolicies, PoliciesGuard } from 'src/casl/policyGuard';
 import { Post } from './posts.entity';
 import { PostService } from './posts.service';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Resolver(Post)
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
@@ -24,6 +26,7 @@ export class PostResolver {
     return await this.postService.createPost(name, content);
   }
 
+  @SkipThrottle(false)
   @Query(() => [Post])
   async getMyPosts(
     @Args('studentId', { type: () => Number, nullable: true })

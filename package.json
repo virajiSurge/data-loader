@@ -29,6 +29,7 @@
     "@nestjs/graphql": "^10.1.7",
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/throttler": "^4.1.0",
     "apollo-server-express": "^3.11.1",
     "graphql": "^16.6.0",
     "mongoose": "^6.8.2",
