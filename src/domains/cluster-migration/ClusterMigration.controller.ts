@@ -1,10 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ClusterMigrationService } from './ClusterMigration.service';
 
-export class CreateCouponDto {
-  indices: string[];
-}
-
 @Controller()
 export class ClusterMigrateController {
   constructor(

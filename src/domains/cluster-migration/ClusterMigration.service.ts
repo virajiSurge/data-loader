@@ -32,12 +32,13 @@ export class ClusterMigrationService {
         size: 1000,
       });
 
-      while (body.hits.hits.length > 0) {
+      if (body.hits.hits.length > 0) {
         const bulkRequest: any[] = [];
         body.hits.hits.forEach((hit: any) => {
-          bulkRequest.push({
-            index: { _index: indexName, _id: hit._id, body: hit._source },
-          });
+          bulkRequest.push(
+            { index: { _index: indexName, _id: hit._id } },
+            hit._source,
+          );
         });
 
         const bulkResponse = await this.targetClient.bulk({
