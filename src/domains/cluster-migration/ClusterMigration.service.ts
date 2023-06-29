@@ -1,6 +1,6 @@
-import { Client } from '@elastic/elasticsearch';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Client } from '@opensearch-project/opensearch';
 
 @Injectable()
 export class ClusterMigrationService {
@@ -9,17 +9,17 @@ export class ClusterMigrationService {
 
   constructor(private readonly configService: ConfigService) {
     this.sourceClient = new Client({
-      node: configService.get<string>('OPENSEARCH_SOURCE_URL'),
+      node: configService.get<string>('OPENSEARCH_URL'),
       auth: {
-        username: configService.get<string>('OPENSEARCH_SOURCE_USERNAME'),
-        password: configService.get<string>('OPENSEARCH_SOURCE_PASSWORD'),
+        username: configService.get<string>('OPENSEARCH_USERNAME'),
+        password: configService.get<string>('OPENSEARCH_PASSWORD'),
       },
     });
     this.targetClient = new Client({
-      node: configService.get<string>('OPENSEARCH_TARGET_URL'),
+      node: configService.get<string>('OPENSEARCH_URL'),
       auth: {
-        username: configService.get<string>('OPENSEARCH_TARGET_USERNAME'),
-        password: configService.get<string>('OPENSEARCH_TARGET_PASSWORD'),
+        username: configService.get<string>('OPENSEARCH_USERNAME'),
+        password: configService.get<string>('OPENSEARCH_PASSWORD'),
       },
     });
   }
@@ -27,21 +27,22 @@ export class ClusterMigrationService {
   async migrateIndex(indexName: string): Promise<boolean> {
     try {
       console.log('Starting migration:', indexName);
-      const body = await this.sourceClient.search({
+      const { body } = await this.sourceClient.search({
         index: indexName,
         size: 1000,
       });
 
+      console.log('Starting migration:', body);
       if (body.hits.hits.length > 0) {
         const bulkRequest: any[] = [];
         body.hits.hits.forEach((hit: any) => {
           bulkRequest.push(
-            { index: { _index: indexName, _id: hit._id } },
+            { index: { _index: 'dummy-target-index', _id: hit._id } },
             hit._source,
           );
         });
 
-        const bulkResponse = await this.targetClient.bulk({
+        const { body: bulkResponse } = await this.targetClient.bulk({
           filter_path: 'items.*.error,index',
           refresh: true,
           body: bulkRequest,
