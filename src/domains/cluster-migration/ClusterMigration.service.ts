@@ -9,10 +9,10 @@ export class ClusterMigrationService {
 
   constructor(private readonly configService: ConfigService) {
     this.sourceClient = new Client({
-      node: configService.get<string>('OPENSEARCH_URL'),
+      node: configService.get<string>('OPENSEARCH_SOURCE_URL'),
       auth: {
-        username: configService.get<string>('OPENSEARCH_USERNAME'),
-        password: configService.get<string>('OPENSEARCH_PASSWORD'),
+        username: configService.get<string>('OPENSEARCH_SOURCE_USERNAME'),
+        password: configService.get<string>('OPENSEARCH_SOURCE_PASSWORD'),
       },
     });
     this.targetClient = new Client({
