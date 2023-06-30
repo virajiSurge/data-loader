@@ -4555,6 +4555,11 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
+leaky-bucket@^4.1.4:
+  version "4.1.4"
+  resolved "https://registry.npmjs.org/leaky-bucket/-/leaky-bucket-4.1.4.tgz#a578cf73c100a15d56945e3d52466262a8790143"
+  integrity sha512-lz1jxp48XnCtqpV/nxscAwnHL486mL4WaP4nli8x6iVlUr7FS6A087yKrfXQC3GkZIEA8VDGBLJXQTIWrzuwPA==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
