@@ -1,42 +1,40 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Inject, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
 export class RateLimitMiddleware implements NestMiddleware {
   private readonly buckets: Map<
     string,
-    { tokens: number; lastTokenAdded: number }
+    { vaccantSlots: number; lastVaccantSlotAddedTime: number }
   > = new Map();
 
-  constructor(
-    private readonly capacity: number,
-    private readonly interval: number,
-  ) {}
-
   use(req: Request, res: Response, next: NextFunction) {
+    const capacity = 10;
+    const interval = 5;
     const { ip, method, originalUrl } = req;
 
     const bucketId = `${ip}-${method}-${originalUrl}`;
     let bucket = this.buckets.get(bucketId);
 
     if (!bucket) {
-      bucket = { tokens: this.capacity, lastTokenAdded: Date.now() };
+      bucket = { vaccantSlots: capacity, lastVaccantSlotAddedTime: Date.now() };
       this.buckets.set(bucketId, bucket);
+    } else {
+      const now = Date.now();
+      const elapsedTime = now - bucket.lastVaccantSlotAddedTime;
+      const vaccantSlotsToAdd = (elapsedTime * capacity) / interval;
+      bucket.vaccantSlots = Math.min(
+        bucket.vaccantSlots + vaccantSlotsToAdd,
+        capacity,
+      );
+      bucket.lastVaccantSlotAddedTime = now;
     }
 
-    const now = Date.now();
-    const elapsedTime = now - bucket.lastTokenAdded;
-    const tokensToAdd = (elapsedTime * this.capacity) / this.interval;
-    bucket.tokens = Math.min(bucket.tokens + tokensToAdd, this.capacity);
-    bucket.lastTokenAdded = now;
-
-    if (bucket.tokens <= 0) {
-      const timeToReset = this.interval - elapsedTime;
-      res.setHeader('Retry-After', Math.ceil(timeToReset / 1000).toString());
+    if (bucket.vaccantSlots <= 0) {
       return res.status(429).send('Too many requests');
     }
 
-    bucket.tokens -= 1;
+    bucket.vaccantSlots -= 1;
     next();
   }
 }

@@ -6,12 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DataloaderModule } from './dataLoader/dataLoader.module';
 import { DataloaderService } from './dataLoader/dataloader.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { StudentModule } from './domains/students/student.module';
 import { FriendModule } from './domains/friends/friends.module';
 import { PostModule } from './domains/posts/posts.module';
 import { UserModule } from './domains/user/user.module';
 import { CaslModule } from './casl/casl.module';
+import { RateLimitMiddleware } from './middlewares/RateLimitModdleware';
 
 @Module({
   imports: [
@@ -45,5 +46,8 @@ import { CaslModule } from './casl/casl.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RateLimitMiddleware).forRoutes('*');
+  }
 }
